@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Home</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Home">
+<meta name="theme-color" content="#2468cc">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* VOICE: calm, personal, glanceable
+   IDEA: the window you look out of each morning
+   PICTURE: a live sky that follows the clock and the actual weather
+   COLOUR and TYPE: sky band over warm paper, tomato accent; Outfit + Inter
+   LAYOUT: sky header (greeting, clock, weather), search, links, then to-do beside countdowns */
+:root{color-scheme:light dark;--bg:light-dark(#f7f5f0,#111317);--card:light-dark(#ffffff,#1a1d23);--ink:light-dark(#1c1e22,#ecebe6);--mute:light-dark(#686c74,#9a9ea6);--line:light-dark(#e6e2d9,#2b2f37);--acc:#e2553f;--acc-soft:light-dark(#fdebe7,#3a221d)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+[hidden]{display:none!important}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;overflow-x:clip}
+h1,h2,.big{font-family:Outfit,Inter,sans-serif}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+
+/* sky */
+.sky{position:relative;overflow:hidden;color:#fff;min-height:420px;padding:clamp(24px,4vw,48px) max(5vw,16px) 130px;background:#2a6fd1}
+#skySvg{position:absolute;inset:0;width:100%;height:100%}
+.top{position:relative;max-width:1240px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:28px;align-items:start;text-shadow:0 1px 14px rgba(0,0,0,.28)}
+#greet{font-size:clamp(28px,4vw,44px);line-height:1.05;margin:0 0 6px;font-weight:600;text-wrap:balance}
+#clock{font-family:Outfit,sans-serif;font-weight:600;font-size:clamp(60px,10vw,112px);line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums;white-space:nowrap}
+#date{font-size:18px;opacity:.92;margin-top:6px}
+.ghost{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:999px;padding:8px 14px;min-height:40px;font-size:14px;text-shadow:none}
+.ghost:hover{background:rgba(255,255,255,.24)}
+.namerow{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap}
+.namerow input{background:rgba(255,255,255,.92);color:#1c1e22;border:0;border-radius:999px;padding:8px 14px;min-height:40px;font-size:16px;width:200px}
+
+.wx{background:rgba(10,16,34,.4);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.2);border-radius:22px;padding:20px;text-shadow:none}
+.wxhead{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;font-size:14px;opacity:.95}
+.wxnow{display:flex;align-items:center;gap:16px;margin:10px 0 4px}
+#wxTemp{font-family:Outfit,sans-serif;font-size:clamp(52px,7vw,72px);font-weight:600;line-height:1}
+#wxCond{font-size:20px;font-weight:600;font-family:Outfit,sans-serif}
+#wxMeta{font-size:14px;opacity:.88}
+.fc{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin-top:16px;border-top:1px solid rgba(255,255,255,.18);padding-top:14px;text-align:center;font-size:14px}
+.fc b{display:block;font-weight:600}.fc svg{width:30px;height:30px;display:block;margin:4px auto}
+.fc .lo{opacity:.7}
+.wxpanel{margin-top:14px}
+.wxpanel form{display:flex;gap:8px}
+.wxpanel input{flex:1;border:0;border-radius:12px;padding:10px 14px;min-height:44px;font-size:16px;background:rgba(255,255,255,.94);color:#1c1e22}
+.wxpanel .res{display:grid;gap:6px;margin-top:8px}
+.wxpanel .res button{text-align:left;border-radius:12px}
+#wxNote{font-size:13px;opacity:.85;margin-top:10px}
+.unit{display:inline-flex;border:1px solid rgba(255,255,255,.3);border-radius:999px;overflow:hidden}
+.unit button{background:none;border:0;color:#fff;padding:6px 12px;min-height:36px;font-size:14px}
+.unit button.on{background:rgba(255,255,255,.9);color:#1c1e22}
+
+/* search */
+.search{position:relative;max-width:760px;margin:-38px auto 0;padding:0 max(5vw,16px)}
+.search form{display:flex;background:var(--card);border:1px solid var(--line);border-radius:999px;box-shadow:0 12px 32px rgba(0,0,0,.14);overflow:hidden}
+.search input{flex:1;border:0;background:none;padding:0 22px;min-height:60px;font-size:17px;outline:none}
+.search form:focus-within{outline:3px solid var(--acc)}
+.search button{border:0;background:var(--acc);color:#fff;padding:0 26px;font-weight:600}
+
+/* panels */
+main{max-width:1240px;margin:0 auto;padding:28px max(5vw,16px) 48px;display:grid;gap:20px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px}
+.ph{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.ph h2{margin:0;font-size:22px;font-weight:600}
+.small{font-size:14px;color:var(--mute)}
+.link{background:none;border:0;color:var(--acc);font-weight:600;font-size:14px;padding:8px 4px;min-height:40px}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px}
+.field{border:1px solid var(--line);background:var(--bg);border-radius:12px;padding:10px 14px;min-height:44px;font-size:16px;width:100%}
+.btn{border:0;background:var(--acc);color:#fff;border-radius:12px;padding:0 18px;min-height:44px;font-weight:600;white-space:nowrap}
+.row{display:flex;gap:8px;flex-wrap:wrap}.row .field{flex:1 1 160px;width:auto}
+.x{background:none;border:0;color:var(--mute);width:40px;height:40px;border-radius:10px;font-size:20px;line-height:1;flex:none}
+.x:hover{background:var(--acc-soft);color:var(--acc)}
+
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:12px}
+.tile{position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 8px 12px;border-radius:16px;text-decoration:none;color:var(--ink);border:1px solid transparent;transition:background .15s,border-color .15s}
+a.tile:hover{background:var(--bg);border-color:var(--line)}
+.ico{position:relative;width:52px;height:52px;border-radius:14px;display:grid;place-items:center;color:#fff;font:600 22px Outfit,sans-serif;overflow:hidden}
+.ico img{position:absolute;inset:10px;width:32px;height:32px;background:#fff;border-radius:6px;padding:2px}
+.ln{font-size:14px;font-weight:500;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+.tile .x{position:absolute;top:2px;right:2px;width:32px;height:32px;background:var(--card);border:1px solid var(--line)}
+.editing .tile{border:1px dashed var(--line)}
+#linkForm{margin-top:16px}
+
+.todos{list-style:none;margin:0 0 14px;padding:0}
+.todos li{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--line)}
+.todos li:last-child{border-bottom:0}
+.chk{width:44px;height:44px;flex:none;background:none;border:0;display:grid;place-items:center}
+.chk span{width:24px;height:24px;border-radius:50%;border:2px solid var(--mute);display:grid;place-items:center;transition:.15s}
+.done .chk span{background:var(--acc);border-color:var(--acc)}
+.done .chk span::after{content:"";width:6px;height:11px;border:solid #fff;border-width:0 2px 2px 0;transform:translateY(-1px) rotate(45deg)}
+.tt{flex:1;overflow-wrap:anywhere}
+.done .tt{text-decoration:line-through;color:var(--mute)}
+.empty{color:var(--mute);font-size:15px;padding:10px 0}
+
+.feat{background:var(--acc-soft);border-radius:16px;padding:18px 20px;margin-bottom:14px}
+.feat .big{font-size:clamp(56px,8vw,76px);font-weight:700;color:var(--acc);line-height:1;font-variant-numeric:tabular-nums}
+.feat .what{font:600 20px Outfit,sans-serif;margin-top:4px}
+.evs{list-style:none;margin:0 0 14px;padding:0}
+.evs li{display:grid;grid-template-columns:70px minmax(0,1fr) auto;gap:12px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.evs li:last-child{border-bottom:0}
+.evs .n{font:600 24px Outfit,sans-serif;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.evs .n small{display:block;font:500 12px Inter,sans-serif;color:var(--mute)}
+.evs .past{opacity:.55}
+.meal{border:1px solid var(--line);border-radius:14px;padding:4px 16px;margin-bottom:10px}
+.meal summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:52px}
+.meal summary::-webkit-details-marker{display:none}
+.meal summary b{font:600 18px Outfit,sans-serif}
+.meal summary::after{content:"+";font:500 22px Outfit,sans-serif;color:var(--acc);flex:none}
+.meal[open] summary::after{content:"–"}
+.meal .ing{font-size:15px;color:var(--mute);margin:0 0 6px}
+.meal ol{margin:0 0 12px;padding-left:22px;font-size:15px}
+.meal ol li{margin-bottom:4px}
+.gsec{font:600 14px Inter,sans-serif;color:var(--mute);margin:14px 0 2px}
+.gsec:first-child{margin-top:0}
+.qty{color:var(--mute);font-size:14px;white-space:nowrap}
+.note{background:var(--acc-soft);border-radius:12px;padding:10px 14px;font-size:14px;margin-bottom:12px}
+footer{max-width:1240px;margin:0 auto;padding:0 max(5vw,16px) 36px;font-size:13px;color:var(--mute)}
+footer a{color:inherit}
+
+.drift{animation:drift 90s linear infinite alternate}
+@keyframes drift{from{transform:translateX(-30px)}to{transform:translateX(30px)}}
+@media(prefers-reduced-motion:reduce){.drift{animation:none}}
+@media(max-width:760px){.top,.cols{grid-template-columns:minmax(0,1fr)}.sky{padding-bottom:110px}}
+@media(max-width:420px){.fc{font-size:12px}.search button{padding:0 16px}}
+</style>
+</head>
+<body>
+<header class="sky">
+  <svg id="skySvg" viewBox="0 0 1200 420" preserveAspectRatio="xMidYMax slice" aria-hidden="true"></svg>
+  <div class="top">
+    <div>
+      <h1 id="greet">Hello</h1>
+      <div id="clock">--:--</div>
+      <div id="date"></div>
+      <div class="namerow" id="nameRow"></div>
+    </div>
+    <section class="wx" aria-label="Weather">
+      <div class="wxhead">
+        <button class="ghost" id="cityBtn">Set your city</button>
+        <span class="unit" role="group" aria-label="Units"><button data-u="F">°F</button><button data-u="C">°C</button></span>
+      </div>
+      <div id="wxBody"></div>
+      <div class="wxpanel" id="locPanel" hidden>
+        <form id="locForm"><input id="locQ" placeholder="Search for a city" autocomplete="off" aria-label="City"><button class="ghost" type="submit">Search</button></form>
+        <div class="res" id="locRes"></div>
+        <div class="row" style="margin-top:8px"><button class="ghost" id="geoBtn" type="button">Use my location</button><button class="ghost" id="locCancel" type="button">Cancel</button></div>
+      </div>
+      <div id="wxNote"></div>
+    </section>
+  </div>
+</header>
+
+<div class="search">
+  <form id="searchForm" role="search"><input id="q" placeholder="Search Google or type a web address" aria-label="Search" autocomplete="off"><button type="submit">Search</button></form>
+</div>
+
+<main>
+  <section class="panel" id="linksPanel">
+    <div class="ph"><h2>Links</h2><button class="link" id="editLinks">Edit</button></div>
+    <div class="tiles" id="tiles"></div>
+    <form id="linkForm" class="row" hidden>
+      <input class="field" id="lName" placeholder="Name" maxlength="30" required aria-label="Link name">
+      <input class="field" id="lUrl" placeholder="Web address, e.g. nytimes.com" required aria-label="Link address">
+      <button class="btn" type="submit">Add link</button>
+    </form>
+  </section>
+
+  <div class="cols">
+    <section class="panel">
+      <div class="ph"><h2>To-do</h2><span class="small" id="todoCount"></span></div>
+      <ul class="todos" id="todos"></ul>
+      <form id="todoForm" class="row"><input class="field" id="todoIn" placeholder="Add a task" maxlength="140" aria-label="New task"><button class="btn" type="submit">Add</button></form>
+      <button class="link" id="clearDone" hidden>Clear completed</button>
+    </section>
+
+    <section class="panel">
+      <div class="ph"><h2>Countdowns</h2></div>
+      <div id="feat"></div>
+      <ul class="evs" id="evs"></ul>
+      <form id="evForm" class="row"><input class="field" id="evName" placeholder="Event" maxlength="40" required aria-label="Event name"><input class="field" id="evDate" type="date" required aria-label="Event date"><button class="btn" type="submit">Add</button></form>
+    </section>
+  </div>
+
+  <div class="cols">
+    <section class="panel">
+      <div class="ph"><h2>This week’s meals</h2><span class="small" id="mealWeek"></span></div>
+      <div id="meals"></div>
+    </section>
+
+    <section class="panel">
+      <div class="ph"><h2>Grocery list</h2><span class="small" id="groCount"></span></div>
+      <div id="gro"></div>
+      <form id="groForm" class="row" style="margin-top:14px"><input class="field" id="groIn" placeholder="Add an item" maxlength="60" aria-label="New grocery item"><button class="btn" type="submit">Add</button></form>
+      <div class="row"><button class="link" id="groClear" hidden>Clear checked</button><button class="link" id="groCopy">Copy list</button><span class="small" id="groMsg" style="align-self:center"></span></div>
+    </section>
+  </div>
+</main>
+<footer>Everything is saved in this browser. Weather from <a href="https://open-meteo.com/">Open-Meteo</a>.</footer>
+
+<!-- meals.js sits next to this file and is rewritten by Claude every Sunday -->
+<script src="meals.js"></script>
+<script>
+{
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const S = {
+  get(k, d) { try { const v = localStorage.getItem('hp_' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem('hp_' + k, JSON.stringify(v)); } catch (e) {} }
+};
+const DAY = 864e5;
+const midnight = d => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+const ymd = d => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+const parseYMD = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+function nextOn(mo, da) { const t = midnight(new Date()); let d = new Date(t.getFullYear(), mo, da); if (d < t) d = new Date(t.getFullYear() + 1, mo, da); return d; }
+function thanks(y) { const off = (4 - new Date(y, 10, 1).getDay() + 7) % 7; return new Date(y, 10, 1 + off + 21); }
+function nextThanks() { const t = midnight(new Date()); let d = thanks(t.getFullYear()); if (d < t) d = thanks(t.getFullYear() + 1); return d; }
+
+/* ---------- state ---------- */
+let links = S.get('links', [
+  { n: 'Gmail', u: 'https://mail.google.com' },
+  { n: 'Calendar', u: 'https://calendar.google.com' },
+  { n: 'YouTube', u: 'https://www.youtube.com' },
+  { n: 'Spotify', u: 'https://open.spotify.com' },
+  { n: 'Amazon', u: 'https://www.amazon.com' },
+  { n: 'My Finances', u: 'file:///C:/Users/jhus2/OneDrive/Desktop/Claude/dashboard_v2.html' }
+].filter(l => location.protocol === 'file:' || !l.u.startsWith('file:')));
+let todos = S.get('todos', [
+  { id: uid(), t: 'Click Edit on Links to add your own sites', d: false },
+  { id: uid(), t: 'Set your city for the weather', d: false },
+  { id: uid(), t: 'Add something to count down to', d: false }
+]);
+let events = S.get('events', [
+  { id: uid(), n: 'Thanksgiving', d: ymd(nextThanks()) },
+  { id: uid(), n: 'Christmas', d: ymd(nextOn(11, 25)) },
+  { id: uid(), n: "New Year's Day", d: ymd(nextOn(0, 1)) }
+]);
+let name = S.get('name', ''), unit = S.get('unit', 'F'), loc = S.get('loc', null), wx = null, editing = false;
+
+/* ---------- clock + greeting ---------- */
+function tick() {
+  const n = new Date(), h = n.getHours();
+  $('greet').textContent = (h < 5 ? 'Good night' : h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening') + (name ? ', ' + name : '');
+  $('clock').textContent = n.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+  $('date').textContent = n.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+}
+function renderName(edit) {
+  $('nameRow').innerHTML = edit
+    ? `<input id="nameIn" maxlength="24" placeholder="Your first name" value="${esc(name)}" aria-label="Your name"><button class="ghost" id="nameSave">Save</button>`
+    : `<button class="ghost" id="nameEdit">${name ? 'Change name' : 'Add your name'}</button>`;
+  if (edit) { const i = $('nameIn'); i.focus(); i.onkeydown = e => { if (e.key === 'Enter') $('nameSave').click(); }; $('nameSave').onclick = () => { name = i.value.trim(); S.set('name', name); tick(); renderName(false); }; }
+  else $('nameEdit').onclick = () => renderName(true);
+}
+
+/* ---------- weather ---------- */
+const W = {0:['Clear','clear'],1:['Mostly clear','clear'],2:['Partly cloudy','partly'],3:['Overcast','cloudy'],45:['Fog','fog'],48:['Freezing fog','fog'],
+  51:['Light drizzle','rain'],53:['Drizzle','rain'],55:['Heavy drizzle','rain'],56:['Freezing drizzle','rain'],57:['Freezing drizzle','rain'],
+  61:['Light rain','rain'],63:['Rain','rain'],65:['Heavy rain','rain'],66:['Freezing rain','rain'],67:['Freezing rain','rain'],
+  71:['Light snow','snow'],73:['Snow','snow'],75:['Heavy snow','snow'],77:['Snow grains','snow'],80:['Rain showers','rain'],81:['Rain showers','rain'],
+  82:['Heavy showers','rain'],85:['Snow showers','snow'],86:['Heavy snow showers','snow'],95:['Thunderstorm','storm'],96:['Storm with hail','storm'],99:['Storm with hail','storm']};
+const wc = c => W[c] || ['—', 'cloudy'];
+function icon(k) {
+  const sun = (x, y, r) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#ffc94a"/>`;
+  const cl = (f = '#eef2f7') => `<path d="M9 25h15a5.5 5.5 0 0 0 0-11 7.5 7.5 0 0 0-14.2 2.4A4.4 4.4 0 0 0 9 25z" fill="${f}"/>`;
+  const body = {
+    clear: sun(16, 16, 7),
+    partly: sun(11, 11, 6) + cl(),
+    cloudy: cl('#d5dce6'),
+    fog: '<g stroke="#e3e8ef" stroke-width="2.4" stroke-linecap="round"><path d="M6 12h20M4 18h22M8 24h18"/></g>',
+    rain: cl('#d5dce6') + '<g stroke="#7fc0ff" stroke-width="2" stroke-linecap="round"><path d="M12 27l-1.5 3M18 27l-1.5 3M24 27l-1.5 3"/></g>',
+    snow: cl('#e6ebf2') + '<g fill="#fff"><circle cx="12" cy="29" r="1.6"/><circle cx="18" cy="30" r="1.6"/><circle cx="24" cy="29" r="1.6"/></g>',
+    storm: cl('#aab4c2') + '<path d="M17 22l-4 6h4l-2 4 6-7h-4l2-3z" fill="#ffd34d"/>'
+  }[k];
+  return `<svg viewBox="0 0 32 34" aria-hidden="true">${body}</svg>`;
+}
+function note(t) { $('wxNote').textContent = t || ''; }
+async function loadWx(force) {
+  if (!loc) { $('wxBody').innerHTML = '<p style="margin:14px 0 0">Choose your city to see the weather here.</p>'; drawSky(); return; }
+  $('cityBtn').textContent = loc.name;
+  const key = `${loc.lat},${loc.lon},${unit}`, c = S.get('wxc', null);
+  if (!force && c && c.key === key && Date.now() - c.at < 15 * 60e3) { wx = c.data; renderWx(); return; }
+  const imp = unit === 'F';
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}` +
+    `&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m,is_day` +
+    `&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,sunrise,sunset` +
+    `&temperature_unit=${imp ? 'fahrenheit' : 'celsius'}&wind_speed_unit=${imp ? 'mph' : 'kmh'}&timezone=auto&forecast_days=5`;
+  try {
+    const r = await fetch(url); if (!r.ok) throw new Error(r.status);
+    wx = await r.json(); S.set('wxc', { key, at: Date.now(), data: wx }); note(''); renderWx();
+  } catch (e) {
+    if (c && c.key === key) { wx = c.data; renderWx(); note('Showing the last saved weather. Couldn’t refresh just now.'); }
+    else { $('wxBody').innerHTML = ''; note('Couldn’t load the weather. Check your internet connection.'); }
+  }
+}
+function renderWx() {
+  const c = wx.current, d = wx.daily, [lab, k] = wc(c.weather_code), sp = unit === 'F' ? 'mph' : 'km/h';
+  const rain = d.precipitation_probability_max[0];
+  $('wxBody').innerHTML = `
+    <div class="wxnow"><div id="wxTemp">${Math.round(c.temperature_2m)}°</div>
+      <div><div id="wxCond">${lab}</div><div id="wxMeta">High ${Math.round(d.temperature_2m_max[0])}° · Low ${Math.round(d.temperature_2m_min[0])}°</div></div></div>
+    <div style="font-size:14px;opacity:.88">Feels like ${Math.round(c.apparent_temperature)}° · Wind ${Math.round(c.wind_speed_10m)} ${sp}${rain != null ? ` · ${rain}% chance of rain` : ''}</div>
+    <div class="fc">${d.time.map((t, i) => `<div><b>${i ? parseYMD(t).toLocaleDateString([], { weekday: 'short' }) : 'Today'}</b>${icon(wc(d.weather_code[i])[1])}
+      ${Math.round(d.temperature_2m_max[i])}° <span class="lo">${Math.round(d.temperature_2m_min[i])}°</span></div>`).join('')}</div>`;
+  drawSky();
+}
+function showLoc(on) { $('locPanel').hidden = !on; if (on) { $('locRes').innerHTML = ''; $('locQ').value = ''; $('locQ').focus(); } }
+function setLoc(l) { loc = l; S.set('loc', l); showLoc(false); loadWx(true); }
+$('cityBtn').onclick = () => showLoc($('locPanel').hidden);
+$('locCancel').onclick = () => showLoc(false);
+$('locForm').onsubmit = async e => {
+  e.preventDefault(); const q = $('locQ').value.trim(); if (!q) return;
+  $('locRes').innerHTML = '<span style="font-size:14px">Searching…</span>';
+  try {
+    const r = await fetch('https://geocoding-api.open-meteo.com/v1/search?count=6&language=en&name=' + encodeURIComponent(q));
+    const j = await r.json(), res = j.results || [];
+    $('locRes').innerHTML = res.length ? res.map((p, i) => `<button class="ghost" type="button" data-i="${i}">${esc(p.name)}${p.admin1 ? ', ' + esc(p.admin1) : ''}${p.country_code && p.country_code !== 'US' ? ' · ' + esc(p.country) : ''}</button>`).join('')
+      : '<span style="font-size:14px">No matches. Try just the city name.</span>';
+    $('locRes').querySelectorAll('button').forEach(b => b.onclick = () => { const p = res[b.dataset.i]; setLoc({ name: p.name + (p.admin1 ? ', ' + p.admin1 : ''), lat: +p.latitude.toFixed(3), lon: +p.longitude.toFixed(3) }); });
+  } catch (err) { $('locRes').innerHTML = '<span style="font-size:14px">Search failed. Check your connection.</span>'; }
+};
+$('geoBtn').onclick = () => {
+  if (!navigator.geolocation) { note('Your browser can’t share your location. Search for your city instead.'); return; }
+  note('Finding you…');
+  navigator.geolocation.getCurrentPosition(
+    p => { note(''); setLoc({ name: 'My location', lat: +p.coords.latitude.toFixed(3), lon: +p.coords.longitude.toFixed(3) }); },
+    () => note('Location not available. Search for your city instead.'), { timeout: 10000 });
+};
+document.querySelectorAll('.unit button').forEach(b => b.onclick = () => { unit = b.dataset.u; S.set('unit', unit); markUnit(); loadWx(true); });
+function markUnit() { document.querySelectorAll('.unit button').forEach(b => b.classList.toggle('on', b.dataset.u === unit)); }
+
+/* ---------- sky picture ---------- */
+function mins(s) { const t = s && s.split('T')[1]; if (!t) return null; const [h, m] = t.split(':').map(Number); return h * 60 + m; }
+function drawSky() {
+  const n = new Date(), m = n.getHours() * 60 + n.getMinutes();
+  const rise = (wx && mins(wx.daily.sunrise[0])) || 420, set = (wx && mins(wx.daily.sunset[0])) || 1020;
+  const k = wx ? wc(wx.current.weather_code)[1] : 'clear';
+  const phase = m < rise - 40 || m > set + 50 ? 'night' : m < rise + 50 ? 'dawn' : m > set - 50 ? 'dusk' : 'day';
+  const grey = ['cloudy', 'rain', 'storm', 'fog', 'snow'].includes(k);
+  const P = {
+    night: ['#0a1430', '#1e2c58', '#162238', '#0f1828', '#3a4766'],
+    dawn: ['#34508f', '#f2a27c', '#46705a', '#2f5444', '#f6e6e0'],
+    day: grey ? ['#58697e', '#a9b6c4', '#557a63', '#3f604c', '#e9edf2'] : ['#2468cc', '#8ec5ee', '#4f9a63', '#367a4c', '#ffffff'],
+    dusk: ['#2b3470', '#ef8a5c', '#3e5a55', '#2a4140', '#f7d9cf']
+  }[phase];
+  const [top, bot, h1, h2, cf] = phase === 'night' || !grey ? P : [P[0], P[1], P[2], P[3], '#c3ccd8'];
+  let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  let s = `<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${top}"/><stop offset="1" stop-color="${bot}"/></linearGradient>
+    <radialGradient id="glow"><stop offset="0" stop-color="#fff6c8" stop-opacity=".55"/><stop offset="1" stop-color="#fff6c8" stop-opacity="0"/></radialGradient></defs>
+    <rect width="1200" height="420" fill="url(#g)"/>`;
+  if (phase === 'night' && !grey) for (let i = 0; i < 70; i++) s += `<circle cx="${(rnd() * 1200).toFixed(0)}" cy="${(rnd() * 260).toFixed(0)}" r="${(rnd() * 1.4 + .4).toFixed(1)}" fill="#fff" opacity="${(rnd() * .6 + .3).toFixed(2)}"/>`;
+  const isDay = m >= rise && m <= set;
+  const f = isDay ? (m - rise) / (set - rise) : ((m - set + 1440) % 1440) / (1440 - (set - rise));
+  const x = 120 + f * 960, y = 312 - Math.sin(Math.PI * f) * 70;
+  if (!grey || phase === 'night') {
+    if (isDay) s += `<circle cx="${x}" cy="${y}" r="120" fill="url(#glow)"/><circle cx="${x}" cy="${y}" r="38" fill="#ffd45a"/><circle cx="${x - 8}" cy="${y - 8}" r="30" fill="#ffe385"/>`;
+    else s += `<circle cx="${x}" cy="${y}" r="90" fill="url(#glow)" opacity=".5"/><circle cx="${x}" cy="${y}" r="28" fill="#f3f0e2"/><circle cx="${x + 12}" cy="${y - 6}" r="26" fill="${top}"/>`;
+  }
+  if (k === 'fog') for (let i = 0; i < 6; i++) s += `<rect x="${-100 + rnd() * 200}" y="${150 + i * 34}" width="1400" height="18" rx="9" fill="#fff" opacity=".22"/>`;
+  const nc = { clear: 0, partly: 3, cloudy: 7, fog: 2, rain: 7, snow: 6, storm: 8 }[k];
+  const cc = phase === 'night' ? '#4a5778' : k === 'storm' ? '#8e99a9' : cf;
+  s += '<g class="drift">';
+  for (let i = 0; i < nc; i++) {
+    const cx = (i + .5) * (1200 / nc) + (rnd() - .5) * 90, cy = 60 + rnd() * 130, sc = .9 + rnd() * 1.1;
+    s += `<g transform="translate(${cx.toFixed(0)} ${cy.toFixed(0)}) scale(${sc.toFixed(2)})" opacity="${(.75 + rnd() * .25).toFixed(2)}" fill="${cc}">
+      <ellipse cx="0" cy="12" rx="70" ry="22" opacity=".55" fill="#000" transform="scale(1 .5) translate(0 40)"/>
+      <ellipse cx="0" cy="0" rx="64" ry="24"/><ellipse cx="-28" cy="-12" rx="32" ry="26"/><ellipse cx="18" cy="-22" rx="38" ry="32"/></g>`;
+  }
+  s += '</g>';
+  if (k === 'rain' || k === 'storm') { s += '<g stroke="#cfe6ff" stroke-width="2" stroke-linecap="round" opacity=".6">'; for (let i = 0; i < 90; i++) { const rx = rnd() * 1220, ry = 120 + rnd() * 240; s += `<path d="M${rx.toFixed(0)} ${ry.toFixed(0)}l-6 18"/>`; } s += '</g>'; }
+  if (k === 'snow') for (let i = 0; i < 110; i++) s += `<circle cx="${(rnd() * 1200).toFixed(0)}" cy="${(110 + rnd() * 260).toFixed(0)}" r="${(rnd() * 2.4 + 1).toFixed(1)}" fill="#fff" opacity=".85"/>`;
+  if (k === 'storm') s += '<path d="M760 150l-40 80h34l-26 70 70-96h-36l28-54z" fill="#ffe066" opacity=".9"/>';
+  s += `<path d="M0 360 C180 300 340 330 520 312 S880 290 1200 330 V420 H0z" fill="${h1}"/>
+    <path d="M0 392 C220 350 420 380 640 362 S1000 352 1200 376 V420 H0z" fill="${h2}"/>`;
+  $('skySvg').innerHTML = s;
+}
+
+/* ---------- search ---------- */
+$('searchForm').onsubmit = e => {
+  e.preventDefault(); const q = $('q').value.trim(); if (!q) return;
+  location.href = /^\S+\.\S{2,}$/.test(q) && !q.includes(' ') ? (/^[a-z]+:\/\//i.test(q) ? q : 'https://' + q) : 'https://www.google.com/search?q=' + encodeURIComponent(q);
+};
+
+/* ---------- links ---------- */
+function fav(u) { try { const h = new URL(u); return /^https?:$/.test(h.protocol) ? 'https://www.google.com/s2/favicons?sz=64&domain=' + h.hostname : ''; } catch (e) { return ''; } }
+function hue(s) { let h = 0; for (const c of s) h = (h * 31 + c.charCodeAt(0)) % 360; return h; }
+function renderLinks() {
+  $('linksPanel').classList.toggle('editing', editing);
+  $('editLinks').textContent = editing ? 'Done' : 'Edit';
+  $('linkForm').hidden = !editing;
+  $('tiles').innerHTML = links.length ? links.map((l, i) => {
+    const f = fav(l.u), inner = `<span class="ico" style="background:hsl(${hue(l.n)} 55% 46%)">${esc(l.n.charAt(0).toUpperCase())}${f ? `<img src="${esc(f)}" alt="" onerror="this.remove()">` : ''}</span><span class="ln">${esc(l.n)}</span>`;
+    return editing ? `<div class="tile">${inner}<button class="x" data-i="${i}" aria-label="Remove ${esc(l.n)}">×</button></div>` : `<a class="tile" href="${esc(l.u)}">${inner}</a>`;
+  }).join('') : '<p class="empty">No links yet. Click Edit to add some.</p>';
+  $('tiles').querySelectorAll('.x').forEach(b => b.onclick = () => { links.splice(+b.dataset.i, 1); S.set('links', links); renderLinks(); });
+}
+$('editLinks').onclick = () => { editing = !editing; renderLinks(); if (editing) $('lName').focus(); };
+$('linkForm').onsubmit = e => {
+  e.preventDefault(); const n = $('lName').value.trim(); let u = $('lUrl').value.trim(); if (!n || !u) return;
+  if (!/^[a-z]+:/i.test(u)) u = 'https://' + u;
+  links.push({ n, u }); S.set('links', links); $('lName').value = $('lUrl').value = ''; renderLinks(); $('lName').focus();
+};
+
+/* ---------- to-do ---------- */
+function renderTodos() {
+  $('todos').innerHTML = todos.length ? todos.map(t => `<li class="${t.d ? 'done' : ''}" data-id="${t.id}">
+      <button class="chk" aria-label="${t.d ? 'Mark not done' : 'Mark done'}"><span></span></button><span class="tt">${esc(t.t)}</span>
+      <button class="x" aria-label="Delete task">×</button></li>`).join('') : '<li class="empty">Nothing to do. Nice.</li>';
+  const left = todos.filter(t => !t.d).length, done = todos.length - left;
+  $('todoCount').textContent = todos.length ? `${left} left` : '';
+  $('clearDone').hidden = !done;
+  $('todos').querySelectorAll('li[data-id]').forEach(li => {
+    const t = todos.find(x => x.id === li.dataset.id);
+    li.querySelector('.chk').onclick = () => { t.d = !t.d; S.set('todos', todos); renderTodos(); };
+    li.querySelector('.x').onclick = () => { todos = todos.filter(x => x !== t); S.set('todos', todos); renderTodos(); };
+  });
+}
+$('todoForm').onsubmit = e => { e.preventDefault(); const v = $('todoIn').value.trim(); if (!v) return; todos.push({ id: uid(), t: v, d: false }); S.set('todos', todos); $('todoIn').value = ''; renderTodos(); };
+$('clearDone').onclick = () => { todos = todos.filter(t => !t.d); S.set('todos', todos); renderTodos(); };
+
+/* ---------- countdowns ---------- */
+function renderEvents() {
+  const today = midnight(new Date());
+  const list = events.map(e => ({ ...e, days: Math.round((parseYMD(e.d) - today) / DAY) })).sort((a, b) => (a.days < 0) - (b.days < 0) || (a.days >= 0 ? a.days - b.days : b.days - a.days));
+  const nx = list.find(e => e.days >= 0);
+  const fmt = e => parseYMD(e.d).toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric', year: parseYMD(e.d).getFullYear() !== today.getFullYear() ? 'numeric' : undefined });
+  $('feat').innerHTML = nx ? `<div class="feat"><div class="big">${nx.days === 0 ? 'Today' : nx.days}</div>
+    <div class="what">${nx.days === 0 ? esc(nx.n) + ' is today!' : `${nx.days === 1 ? 'day' : 'days'} until ${esc(nx.n)}`}</div><div class="small">${fmt(nx)}</div></div>` : '';
+  const rest = list.filter(e => e !== nx);
+  $('evs').innerHTML = rest.length ? rest.map(e => `<li class="${e.days < 0 ? 'past' : ''}">
+      <span class="n">${e.days < 0 ? '✓' : e.days}<small>${e.days < 0 ? 'passed' : e.days === 1 ? 'day' : 'days'}</small></span>
+      <span><b>${esc(e.n)}</b><br><span class="small">${fmt(e)}</span></span>
+      <button class="x" data-id="${e.id}" aria-label="Delete ${esc(e.n)}">×</button></li>`).join('')
+    : (nx ? '' : '<li class="empty" style="display:block">Add a date to look forward to.</li>');
+  if (nx) $('feat').querySelector('.feat').insertAdjacentHTML('beforeend', `<button class="link" data-id="${nx.id}" style="padding-left:0">Remove</button>`);
+  document.querySelectorAll('#evs .x, #feat .link').forEach(b => b.onclick = () => { events = events.filter(x => x.id !== b.dataset.id); S.set('events', events); renderEvents(); });
+}
+$('evForm').onsubmit = e => { e.preventDefault(); const n = $('evName').value.trim(), d = $('evDate').value; if (!n || !d) return; events.push({ id: uid(), n, d }); S.set('events', events); $('evName').value = $('evDate').value = ''; renderEvents(); };
+
+/* ---------- meals + groceries ---------- */
+const plan = window.MEAL_PLAN && Array.isArray(window.MEAL_PLAN.groceries) ? window.MEAL_PLAN : null;
+const gKey = plan ? 'gchk_' + plan.week : 'gchk_none';
+let gchk = S.get(gKey, {}), gextra = S.get('gextra', []);
+function renderMeals() {
+  if (!plan) { $('meals').innerHTML = '<p class="empty">Your meal plan shows up here every Sunday morning.</p>'; return; }
+  const wk = parseYMD(plan.week);
+  $('mealWeek').textContent = 'Week of ' + wk.toLocaleDateString([], { month: 'short', day: 'numeric' });
+  const stale = (midnight(new Date()) - wk) / DAY > 13;
+  $('meals').innerHTML = (stale ? `<div class="note">This plan is from ${wk.toLocaleDateString([], { month: 'long', day: 'numeric' })}. A newer one should have arrived on Sunday, so the weekly task may not have run.</div>` : '') +
+    (plan.meals || []).map(m => `<details class="meal"><summary><span><b>${esc(m.name)}</b><br><span class="small">${esc(m.servings || '')}${m.why ? ' · ' + esc(m.why) : ''}</span></span></summary>
+      <p class="ing">${(m.ingredients || []).map(esc).join(' · ')}</p><ol>${(m.steps || []).map(s => `<li>${esc(s)}</li>`).join('')}</ol></details>`).join('') +
+    `<p class="small">${plan.estCost ? 'Rough cost: ' + esc(plan.estCost) + '. ' : ''}${plan.pantry && plan.pantry.length ? 'Make sure you have: ' + plan.pantry.map(esc).join(', ') + '.' : ''}</p>`;
+}
+function groItems() {
+  const out = [];
+  if (plan) plan.groceries.forEach((g, i) => { const id = 'p' + i; if (gchk[id] !== 2) out.push({ id, t: g.item, q: g.qty, sec: g.section || 'Other', d: gchk[id] === 1, plan: true }); });
+  gextra.forEach(x => out.push({ id: x.id, t: x.t, q: '', sec: 'Your items', d: x.d, plan: false }));
+  return out;
+}
+function renderGro() {
+  const items = groItems(), secs = [];
+  items.forEach(it => { let s = secs.find(x => x.n === it.sec); if (!s) secs.push(s = { n: it.sec, l: [] }); s.l.push(it); });
+  $('gro').innerHTML = items.length ? secs.map(s => `<div class="gsec">${esc(s.n)}</div><ul class="todos">${s.l.map(it => `<li class="${it.d ? 'done' : ''}" data-id="${it.id}">
+      <button class="chk" aria-label="${it.d ? 'Uncheck' : 'Check off'} ${esc(it.t)}"><span></span></button>
+      <span class="tt">${esc(it.t)}</span>${it.q ? `<span class="qty">${esc(it.q)}</span>` : ''}
+      ${it.plan ? '' : '<button class="x" aria-label="Delete item">×</button>'}</li>`).join('')}</ul>`).join('')
+    : '<p class="empty">Your list is empty.</p>';
+  const left = items.filter(i => !i.d).length;
+  $('groCount').textContent = items.length ? `${left} to buy` : '';
+  $('groClear').hidden = !items.some(i => i.d);
+  $('gro').querySelectorAll('li[data-id]').forEach(li => {
+    const id = li.dataset.id, ex = gextra.find(x => x.id === id);
+    li.querySelector('.chk').onclick = () => { if (ex) { ex.d = !ex.d; S.set('gextra', gextra); } else { gchk[id] = gchk[id] === 1 ? 0 : 1; S.set(gKey, gchk); } renderGro(); };
+    const x = li.querySelector('.x'); if (x) x.onclick = () => { gextra = gextra.filter(e => e !== ex); S.set('gextra', gextra); renderGro(); };
+  });
+}
+$('groForm').onsubmit = e => { e.preventDefault(); const v = $('groIn').value.trim(); if (!v) return; gextra.push({ id: uid(), t: v, d: false }); S.set('gextra', gextra); $('groIn').value = ''; renderGro(); };
+$('groClear').onclick = () => { gextra = gextra.filter(x => !x.d); for (const k in gchk) if (gchk[k] === 1) gchk[k] = 2; S.set('gextra', gextra); S.set(gKey, gchk); renderGro(); };
+$('groCopy').onclick = async () => {
+  const txt = groItems().filter(i => !i.d).map(i => '- ' + i.t + (i.q ? ' (' + i.q + ')' : '')).join('\n');
+  try { await navigator.clipboard.writeText(txt); $('groMsg').textContent = 'Copied'; } catch (err) { $('groMsg').textContent = 'Couldn’t copy here'; }
+  setTimeout(() => $('groMsg').textContent = '', 2500);
+};
+
+/* ---------- start ---------- */
+renderMeals(); renderGro();
+tick(); renderName(false); markUnit(); renderLinks(); renderTodos(); renderEvents(); drawSky(); loadWx(false);
+if (!loc) showLoc(true);
+setInterval(tick, 5000);
+setInterval(() => { drawSky(); renderEvents(); }, 5 * 60e3);
+setInterval(() => loadWx(true), 30 * 60e3);
+}
+</script>
+</body>
+</html>
