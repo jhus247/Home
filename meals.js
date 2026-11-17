@@ -1,72 +1,77 @@
 // Weekly meal plan for homepage.html. Claude rewrites this file every Sunday.
 // Open homepage.html to see it. Double-clicking this file does nothing.
 if (typeof window !== "undefined") window.MEAL_PLAN = {
-  week: "2026-11-16",
-  estCost: "about $30–40 at a typical US grocery store",
-  pantry: ["olive or vegetable oil", "salt and pepper", "chili powder", "ground cumin", "curry powder", "soy sauce"],
+  week: "2026-11-17",
+  estCost: "about $35–45 at a typical US grocery store",
+  pantry: ["olive or vegetable oil", "salt and pepper", "paprika (sweet or smoked)", "ground cumin", "dried oregano or Italian seasoning", "dried thyme", "red pepper flakes", "chicken or vegetable bouillon"],
   meals: [
     {
-      name: "Black bean and sweet potato chili",
+      name: "Turkey bolognese with whole-wheat spaghetti",
       servings: "4 servings",
-      why: "high fiber, freezes well",
-      ingredients: ["2 sweet potatoes", "1 onion", "3 garlic cloves", "2 cans black beans", "1 can (28 oz) diced tomatoes", "chili powder", "cumin"],
+      why: "lean protein with hidden carrots and spinach; reheats well for lunches",
+      ingredients: ["1 lb ground turkey", "1 onion", "2 carrots", "3 garlic cloves", "1 can (28 oz) crushed tomatoes", "½ bag frozen spinach", "8 oz whole-wheat spaghetti", "oregano, red pepper flakes"],
       steps: [
-        "Dice the onion and sweet potatoes into ½-inch cubes; mince the garlic.",
-        "Cook the onion in 1 tbsp oil for 5 minutes, then add garlic, 2 tbsp chili powder and 2 tsp cumin for 1 minute.",
-        "Add sweet potatoes, tomatoes, drained beans and 1 cup water. Simmer covered 25 minutes until the potatoes are soft.",
-        "Season with salt. Top with sliced green onions."
+        "Finely dice the onion and carrots; mince the garlic. Start a pot of salted water for the pasta.",
+        "Brown the turkey in 1 tbsp oil for 6–8 minutes, breaking it up. Add onion and carrots and cook 5 minutes, then garlic, 2 tsp oregano and a pinch of pepper flakes for 1 minute.",
+        "Add the crushed tomatoes and spinach. Simmer 15–20 minutes; season with salt and pepper.",
+        "Meanwhile cook the spaghetti, drain, and toss with the sauce."
       ]
     },
     {
-      name: "Red lentil curry with brown rice",
-      servings: "4 servings",
-      why: "cheap protein, ready in 30 minutes",
-      ingredients: ["1½ cups red lentils", "1 onion", "3 garlic cloves", "1 can (14.5 oz) diced tomatoes", "1 can light coconut milk", "½ bag frozen spinach", "brown rice", "curry powder"],
+      name: "Salmon cakes with roasted carrots and lemony cabbage slaw",
+      servings: "3 servings",
+      why: "canned salmon is a cheap source of omega-3s; oats instead of breadcrumbs",
+      ingredients: ["1 can (14.75 oz) pink salmon", "1 egg", "½ cup rolled oats", "3 green onions", "1 lemon", "4 carrots", "¼ head green cabbage", "¼ cup plain Greek yogurt"],
       steps: [
-        "Start 1½ cups brown rice (about 45 minutes). Cook extra: you'll use 2 cups of it for the fried rice.",
-        "Cook the diced onion in oil for 5 minutes; add garlic and 2 tbsp curry powder for 1 minute.",
-        "Add rinsed lentils, tomatoes, coconut milk and 2 cups water. Simmer 20 minutes, stirring now and then.",
-        "Stir in the spinach until warm, season with salt and serve over rice."
+        "Heat the oven to 425°F. Cut carrots into sticks, toss with oil, salt and pepper, and roast 25 minutes.",
+        "Drain the salmon, remove large skin pieces, and mash it (the soft bones are fine to eat). Mix in the egg, oats, sliced green onions, zest of the lemon, salt and pepper. Shape into 6 patties.",
+        "Pan-fry the patties in oil over medium heat, 3–4 minutes per side, until golden.",
+        "Thinly slice the cabbage and toss with the yogurt, juice of half the lemon, salt and pepper. Serve with the cakes and carrots."
       ]
     },
     {
-      name: "Sheet-pan chicken thighs, broccoli and potatoes",
-      servings: "3–4 servings",
-      why: "one pan, lean protein and vegetables",
-      ingredients: ["2 lb bone-in chicken thighs", "1½ lb potatoes", "2 broccoli crowns", "garlic", "oil, salt, pepper"],
-      steps: [
-        "Heat the oven to 425°F. Cut potatoes into 1-inch chunks and toss with oil, salt and pepper on a sheet pan.",
-        "Season the chicken with salt, pepper and a little chili powder; nestle skin-side up among the potatoes. Roast 25 minutes.",
-        "Add broccoli florets tossed in oil and salt. Roast 15–20 minutes more, until the chicken reaches 175°F."
-      ]
-    },
-    {
-      name: "Vegetable egg fried rice",
+      name: "Chickpea shakshuka with whole-wheat pita",
       servings: "2–3 servings",
-      why: "uses leftover rice, 15 minutes",
-      ingredients: ["2 cups cooked brown rice", "4 eggs", "1½ cups frozen peas and carrots", "green onions", "soy sauce"],
+      why: "eggs and chickpeas for protein, mostly pantry ingredients, 30 minutes",
+      ingredients: ["1 onion", "2 garlic cloves", "1 can (28 oz) crushed tomatoes", "1 can (15 oz) chickpeas", "½ bag frozen spinach", "5 eggs", "whole-wheat pita", "paprika, cumin"],
       steps: [
-        "Scramble the eggs in a hot oiled pan, then move them to a plate.",
-        "Add a little more oil, then the cold rice and frozen vegetables. Fry 5 minutes, stirring.",
-        "Return the eggs, add 2 tbsp soy sauce and the green onions, and toss."
+        "Cook the diced onion in 1 tbsp oil for 5 minutes in a wide skillet. Add garlic, 2 tsp paprika and 1 tsp cumin for 1 minute.",
+        "Add tomatoes, drained chickpeas and spinach. Simmer 10 minutes until slightly thick; season with salt.",
+        "Make 5 wells, crack an egg into each, cover, and cook on low 6–8 minutes until the whites set.",
+        "Serve with warm pita and a spoonful of yogurt if you have some left."
+      ]
+    },
+    {
+      name: "Cabbage, white bean and barley soup",
+      servings: "4 servings",
+      why: "very cheap, high fiber, uses up the rest of the cabbage and carrots",
+      ingredients: ["1 onion", "2 carrots", "3 garlic cloves", "½ head green cabbage", "1 can (15 oz) cannellini beans", "¾ cup pearl barley", "bouillon for 6 cups broth", "thyme, paprika"],
+      steps: [
+        "Dice the onion and carrots; mince the garlic. Cook the onion and carrots in 1 tbsp oil for 5 minutes, then add garlic, 1 tsp thyme and 1 tsp paprika for 1 minute.",
+        "Add the rinsed barley and 6 cups water with bouillon. Simmer covered 25 minutes.",
+        "Add the chopped cabbage and drained beans. Simmer 15 minutes more until the barley is tender.",
+        "Season with salt, pepper and a squeeze of the leftover lemon."
       ]
     }
   ],
   groceries: [
-    { item: "Sweet potatoes", qty: "2 large", section: "Produce" },
-    { item: "Yellow onions", qty: "3", section: "Produce" },
+    { item: "Yellow onions", qty: "3 (or a 3 lb bag)", section: "Produce" },
+    { item: "Carrots", qty: "2 lb bag", section: "Produce" },
     { item: "Garlic", qty: "1 head", section: "Produce" },
-    { item: "Potatoes", qty: "3 lb bag", section: "Produce" },
-    { item: "Broccoli", qty: "2 crowns", section: "Produce" },
+    { item: "Green cabbage", qty: "1 medium head", section: "Produce" },
     { item: "Green onions", qty: "1 bunch", section: "Produce" },
-    { item: "Bone-in chicken thighs", qty: "about 2 lb", section: "Meat and eggs" },
+    { item: "Lemon", qty: "1", section: "Produce" },
+    { item: "Ground turkey (93% lean)", qty: "1 lb", section: "Meat and eggs" },
     { item: "Eggs", qty: "1 dozen", section: "Meat and eggs" },
-    { item: "Black beans", qty: "2 cans", section: "Canned and dry goods" },
-    { item: "Diced tomatoes", qty: "1 (28 oz) + 1 (14.5 oz)", section: "Canned and dry goods" },
-    { item: "Light coconut milk", qty: "1 can", section: "Canned and dry goods" },
-    { item: "Red lentils", qty: "1 lb bag", section: "Canned and dry goods" },
-    { item: "Brown rice", qty: "2 lb bag", section: "Canned and dry goods" },
-    { item: "Frozen chopped spinach", qty: "1 bag", section: "Frozen" },
-    { item: "Frozen peas and carrots", qty: "1 bag", section: "Frozen" }
+    { item: "Plain Greek yogurt", qty: "1 small cup (5.3 oz)", section: "Dairy" },
+    { item: "Crushed tomatoes", qty: "2 cans (28 oz)", section: "Canned and dry goods" },
+    { item: "Pink salmon", qty: "1 can (14.75 oz)", section: "Canned and dry goods" },
+    { item: "Chickpeas", qty: "1 can (15 oz)", section: "Canned and dry goods" },
+    { item: "Cannellini beans", qty: "1 can (15 oz)", section: "Canned and dry goods" },
+    { item: "Whole-wheat spaghetti", qty: "1 lb box", section: "Canned and dry goods" },
+    { item: "Pearl barley", qty: "1 lb bag", section: "Canned and dry goods" },
+    { item: "Old-fashioned rolled oats", qty: "18 oz canister (skip if you have some)", section: "Canned and dry goods" },
+    { item: "Frozen chopped spinach", qty: "1 bag (12 oz)", section: "Frozen" },
+    { item: "Whole-wheat pita", qty: "1 pack (5–6)", section: "Other" }
   ]
 };
